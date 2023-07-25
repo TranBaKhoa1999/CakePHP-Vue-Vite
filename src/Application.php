@@ -127,7 +127,7 @@ class Application extends BaseApplication  implements AuthenticationServiceProvi
             ->add(new AuthorizationMiddleware($this, [
                 'unauthorizedHandler' => [
                     'className' => 'Authorization.Redirect',
-                    'url' => '/',
+                    'url' => '/{}',
                     'exceptions' => [
                         MissingIdentityException::class,
                         ForbiddenException::class,
