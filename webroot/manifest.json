@@ -1,0 +1,14 @@
+{
+  "frontend/main.css": {
+    "file": "assets/main-dcf89fce.css",
+    "src": "frontend/main.css"
+  },
+  "frontend/main.js": {
+    "css": [
+      "assets/main-dcf89fce.css"
+    ],
+    "file": "assets/main-aea6f414.js",
+    "isEntry": true,
+    "src": "frontend/main.js"
+  }
+}

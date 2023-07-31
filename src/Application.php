@@ -127,7 +127,7 @@ class Application extends BaseApplication  implements AuthenticationServiceProvi
             ->add(new AuthorizationMiddleware($this, [
                 'unauthorizedHandler' => [
                     'className' => 'Authorization.Redirect',
-                    'url' => '/',
+                    'url' => '/{}',
                     'exceptions' => [
                         MissingIdentityException::class,
                         ForbiddenException::class,
@@ -169,7 +169,7 @@ class Application extends BaseApplication  implements AuthenticationServiceProvi
     public function getAuthenticationService(ServerRequestInterface $request): AuthenticationServiceInterface
     {
         $authenticationService = new AuthenticationService([
-            'unauthenticatedRedirect' => Router::url('/users/login'),
+            'unauthenticatedRedirect' => Router::url('/login'),
             'queryParam' => 'redirect',
         ]);
 
@@ -189,7 +189,7 @@ class Application extends BaseApplication  implements AuthenticationServiceProvi
                 'username' => 'email',
                 'password' => 'password',
             ],
-            'loginUrl' => Router::url('/users/login'),
+            'loginUrl' => Router::url('/login'),
         ]);
 
         return $authenticationService;

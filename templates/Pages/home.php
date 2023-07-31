@@ -1,1 +1,1 @@
-Home Page
+<div id="app"></div>

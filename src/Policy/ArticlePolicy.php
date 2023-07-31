@@ -60,8 +60,8 @@ class ArticlePolicy
 
     protected function isAuthor(IdentityInterface $user, Article $article)
     {
-        return false;
-        return $article->user_id === $user->getIdentifier();
+        return true;
+        return $article->user_id === $user->id;
     }
 
 }

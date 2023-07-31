@@ -45,25 +45,29 @@ class ArticlesController extends AppController
     {
         $this->Authorization->skipAuthorization();
         $article = $this->Articles
-        ->findBySlug($slug)
-        ->contain('Tags')
-        ->firstOrFail();
+            ->findBySlug($slug)
+            ->contain('Tags')
+            ->firstOrFail();
         $this->set(compact('article'));
     }
 
     public function add()
     {
         $article = $this->Articles->newEmptyEntity();
-        $this->Authorization->authorize($article,'create');
+        $errors = [];
+        $this->Authorization->authorize($article, 'create');
         if ($this->request->is('post')) {
             $article = $this->Articles->patchEntity($article, $this->request->getData());
             $article->user_id = $this->request->getAttribute('identity')->getIdentifier();
-
             if ($this->Articles->save($article)) {
                 $this->Flash->success(__('Your article has been saved.'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('Unable to add your article.'));
+            if (!empty($errors)) {
+                $this->Flash->error('error', $errors);
+            } else {
+                $this->Flash->error(__('Unable to add your article.'));
+            }
         }
         // Get a list of tags.
         $tags = $this->Articles->Tags->find('list')->all();
@@ -76,7 +80,7 @@ class ArticlesController extends AppController
     public function edit($slug)
     {
         $article = $this->Articles->findBySlug($slug)->contain('Tags')->firstOrFail();
-        $this->Authorization->authorize($article ,'update');
+        $this->Authorization->authorize($article, 'update');
 
         if ($this->request->is(['post', 'put'])) {
             $this->Articles->patchEntity($article, $this->request->getData());
@@ -99,10 +103,10 @@ class ArticlesController extends AppController
         $this->request->allowMethod(['delete']);
 
         $article = $this->Articles->findBySlug($slug)->firstOrFail();
-        $this->Authorization->authorize($article , 'delete');
+        $this->Authorization->authorize($article, 'delete');
         if ($this->Articles->delete($article)) {
             $this->Flash->success(__('The "{0}" article has been deleted.', $article->title));
-            return $this->redirect(['action' => 'index']);
+            return $this->redirect(['controller' => 'Articles','action' => 'index']);
         }
     }
 
